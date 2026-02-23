@@ -9,5 +9,7 @@ public interface CardRepository extends JpaRepository<Card, Long> {
 
     Optional<Card> findByPanHash(String panHash);
 
-    Optional<Card> findByMaskedPan(String maskedPan);
+    Optional<Card> findByIdentificador(String identificador);
+
+    Optional<Card> findByIdentificadorAndNumeroValidacion(String identificador, Integer numeroValidacion);
 }

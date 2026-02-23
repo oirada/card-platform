@@ -21,6 +21,11 @@ public class Transaction {
 
     private String description;
 
+    @Column(unique = true)
+    private String reference; // número de referencia (6 dígitos)
+
+    private String address;
+
     @Enumerated(EnumType.STRING)
     private TransactionStatus status;
 

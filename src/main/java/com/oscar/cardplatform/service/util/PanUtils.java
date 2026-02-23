@@ -3,6 +3,7 @@ package com.oscar.cardplatform.service.util;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 
 public class PanUtils {
 
@@ -12,7 +13,13 @@ public class PanUtils {
         if (pan == null || pan.length() < 10) {
             throw new IllegalArgumentException("PAN inválido");
         }
-        return pan.substring(0, 4) + "********" + pan.substring(pan.length() - 4);
+        int len = pan.length();
+        String start = pan.substring(0, Math.min(6, len));
+        String end = pan.substring(Math.max(0, len - 4));
+        StringBuilder middle = new StringBuilder();
+        int hidden = Math.max(0, len - 10); // total oculto entre 6 y 4
+        for (int i = 0; i < hidden; i++) middle.append('*');
+        return start + middle + end;
     }
 
     public static String hash(String pan) {
@@ -27,5 +34,10 @@ public class PanUtils {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Error al hashear PAN", e);
         }
+    }
+
+    public static String identificador(String pan) {
+        String fecha = LocalDate.now().toString();
+        return hash(pan + "|" + fecha);
     }
 }

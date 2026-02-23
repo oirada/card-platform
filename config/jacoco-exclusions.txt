@@ -1,0 +1,12 @@
+# Patrones de exclusión para cobertura (JaCoCo / IntelliJ)
+# Puedes añadir aquí clases o paquetes que no deben contarse en el coverage.
+# Formatos válidos (uno por línea):
+#   com/oscar/cardplatform/CardPlatformApplication*
+#   **/*Application*
+
+# Excluir la clase principal con el main
+com/oscar/cardplatform/CardPlatformApplication*
+
+# Ejemplos adicionales que recomendamos (descomentar si aplica):
+# **/*Generated*
+

@@ -7,7 +7,6 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import tools.jackson.databind.ObjectMapper;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -19,16 +18,19 @@ class CardControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @Test
     void shouldCreateCardEndpoint() throws Exception {
-        CreateCardRequest req = new CreateCardRequest("4111111111111111");
+        String json = "{\n" +
+                "  \"pan\": \"4111111111112222\",\n" +
+                "  \"titular\": \"Juan Perez\",\n" +
+                "  \"cedula\": \"1712345678\",\n" +
+                "  \"tipo\": \"Debito\",\n" +
+                "  \"telefono\": \"0987654321\"\n" +
+                "}";
 
         mockMvc.perform(post("/api/cards")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(req)))
-                .andExpect(status().isOk());
+                        .content(json))
+                .andExpect(status().isCreated());
     }
 }
