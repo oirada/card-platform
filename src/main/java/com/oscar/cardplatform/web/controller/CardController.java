@@ -3,10 +3,6 @@ package com.oscar.cardplatform.web.controller;
 import com.oscar.cardplatform.domain.entity.Card;
 import com.oscar.cardplatform.service.CardService;
 import com.oscar.cardplatform.web.dto.*;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -18,18 +14,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/cards")
 @RequiredArgsConstructor
-@Tag(name = "Tarjetas", description = "Operaciones de gestión de tarjetas")
 public class CardController {
 
     private final CardService cardService;
     private static final Logger logger = LoggerFactory.getLogger(CardController.class);
 
     @PostMapping
-    @Operation(summary = "Crear tarjeta", description = "Crea una nueva tarjeta en el sistema. Retorna número de validación (1-100), identificador único y PAN enmascarado")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Tarjeta creada exitosamente"),
-            @ApiResponse(responseCode = "400", description = "Datos inválidos en la solicitud")
-    })
     public ResponseEntity<CreateCardResponse> create(@Valid @RequestBody CreateCardRequest request) {
         try {
             Card card = cardService.createCard(request.pan(), request.titular(), request.cedula(), request.tipo(), request.telefono());
@@ -46,11 +36,6 @@ public class CardController {
     }
 
     @PostMapping("/enrol")
-    @Operation(summary = "Enrolar tarjeta", description = "Activa una tarjeta si el número de validación es correcto. Cambia estado a ENROLADA")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Tarjeta enrolada exitosamente"),
-            @ApiResponse(responseCode = "404", description = "Operación inválida (tarjeta no existe o validación fallida)")
-    })
     public ResponseEntity<EnrolCardResponse> enrol(@Valid @RequestBody EnrolCardRequest request) {
         try {
             Card card = cardService.enrolCard(request.identificador(), request.numeroValidacion());
@@ -66,11 +51,6 @@ public class CardController {
     }
 
     @GetMapping("/{identificador}")
-    @Operation(summary = "Consultar tarjeta", description = "Obtiene los detalles de una tarjeta usando su identificador")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Datos de la tarjeta"),
-            @ApiResponse(responseCode = "404", description = "Operación inválida (tarjeta no encontrada)")
-    })
     public ResponseEntity<CardDetailResponse> getByIdentificador(@PathVariable String identificador) {
         try {
             Card card = cardService.getCardByIdentificador(identificador);
@@ -82,11 +62,6 @@ public class CardController {
     }
 
     @DeleteMapping("/{identificador}")
-    @Operation(summary = "Eliminar tarjeta", description = "Realiza borrado lógico de una tarjeta (marca estado como INACTIVE)")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Tarjeta eliminada"),
-            @ApiResponse(responseCode = "404", description = "Operación inválida (tarjeta no encontrada)")
-    })
     public ResponseEntity<DeleteCardResponse> delete(@PathVariable String identificador) {
         try {
             cardService.deleteCardLogical(identificador);

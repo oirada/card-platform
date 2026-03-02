@@ -1,4 +1,6 @@
 // Se añade un handler global para normalizar mensajes expuestos al cliente (genéricos por seguridad)
+// NOTA: Deshabilitado temporalmente debido a incompatibilidad con springdoc-openapi 2.3.0
+// El manejo de excepciones se realiza ahora en cada controlador específicamente
 package com.oscar.cardplatform.web.exception;
 
 import com.oscar.cardplatform.web.dto.*;
@@ -8,9 +10,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
+// @RestControllerAdvice - DESHABILITADO
 public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);

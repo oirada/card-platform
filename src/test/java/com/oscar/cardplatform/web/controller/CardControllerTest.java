@@ -1,6 +1,5 @@
 package com.oscar.cardplatform.web.controller;
 
-import com.oscar.cardplatform.web.dto.CreateCardRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;

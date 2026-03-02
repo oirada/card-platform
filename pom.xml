@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>4.0.3</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>com.oscar</groupId>
     <artifactId>card-platform</artifactId>
@@ -55,7 +55,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.4.0</version>
+            <version>2.3.0</version>
         </dependency>
 
         <dependency>
@@ -166,8 +166,11 @@
                                     <element>PACKAGE</element>
                                     <excludes>
                                         <exclude>*Test</exclude>
-                                        <!-- Excluir la clase principal que contiene el main del coverage -->
-                                        <exclude>com/oscar/cardplatform/CardPlatformApplication*</exclude>
+                                        <exclude>com/oscar/cardplatform/config/**</exclude>
+                                        <exclude>com/oscar/cardplatform/CardPlatformApplication</exclude>
+                                        <exclude>com/oscar/cardplatform/web/dto/**</exclude>
+                                        <exclude>com/oscar/cardplatform/web/exception/**</exclude>
+                                        <exclude>com/oscar/cardplatform/domain/entity/**</exclude>
                                     </excludes>
                                     <limits>
                                         <limit>

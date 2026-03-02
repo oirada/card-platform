@@ -4,10 +4,6 @@ import com.oscar.cardplatform.domain.entity.Transaction;
 import com.oscar.cardplatform.service.TransactionService;
 import com.oscar.cardplatform.service.CardService;
 import com.oscar.cardplatform.web.dto.*;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -19,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/transactions")
 @RequiredArgsConstructor
-@Tag(name = "Transacciones", description = "Operaciones de compra y anulación de transacciones")
 public class TransactionController {
 
     private final TransactionService transactionService;
@@ -27,12 +22,6 @@ public class TransactionController {
     private static final Logger logger = LoggerFactory.getLogger(TransactionController.class);
 
     @PostMapping
-    @Operation(summary = "Crear transacción", description = "Registra una nueva compra. La tarjeta debe estar ENROLADA y la referencia debe ser única")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Compra registrada exitosamente"),
-            @ApiResponse(responseCode = "404", description = "Operación inválida (tarjeta no existe)"),
-            @ApiResponse(responseCode = "409", description = "Conflicto (tarjeta no enrolada o referencia duplicada)")
-    })
     public ResponseEntity<CreateTransactionResponse> create(@Valid @RequestBody CreateTransactionRequest req) {
         try {
             Transaction tx = transactionService.registerTransactionByIdentificador(req.identificador(), req.referencia(), req.total(), req.direccion());
@@ -59,12 +48,6 @@ public class TransactionController {
     }
 
     @PostMapping("/annul")
-    @Operation(summary = "Anular transacción", description = "Anula una compra si fue hecha hace menos de 5 minutos. El identificador debe corresponder a la transacción")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Compra anulada exitosamente"),
-            @ApiResponse(responseCode = "400", description = "Operación inválida (referencia no encontrada)"),
-            @ApiResponse(responseCode = "409", description = "Conflicto (no se puede anular - pasaron >5 minutos)")
-    })
     public ResponseEntity<AnnulTransactionResponse> annul(@Valid @RequestBody AnnulTransactionRequest req) {
         try {
             Transaction tx = transactionService.annulTransaction(req.identificador(), req.referencia(), req.total());
